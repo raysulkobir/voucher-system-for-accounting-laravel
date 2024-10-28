@@ -13,15 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Product::latest()->get();
     }
 
     /**
@@ -29,7 +21,14 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        //TODO Create and save the Product using validated data
+        $product = Product::create($request->validated());
+
+        //TODO Return a success response with the created Product
+        return response()->json([
+            'message' => 'Product created successfully!',
+            'data' => $product,
+        ], 201);
     }
 
     /**
@@ -37,15 +36,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
+        return response()->json($product);
     }
 
     /**
@@ -53,7 +44,14 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        //TODO Update the Product with validated data
+        $product->update($request->validated());
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Product updated successfully!',
+            'data' => $product,
+        ], 200);
     }
 
     /**
@@ -61,6 +59,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        //TODO Delete the brand
+        $product->delete();
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Product deleted successfully!',
+        ], 200);
     }
 }
