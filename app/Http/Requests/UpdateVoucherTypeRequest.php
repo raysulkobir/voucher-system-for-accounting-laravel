@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateVoucherTypeRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateVoucherTypeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,15 @@ class UpdateVoucherTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'          => 'required|string',
+            'description'   => 'nullable|string'
         ];
+    }
+    /**
+     * Handle a failed validation attempt.
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }
