@@ -13,15 +13,7 @@ class VoucherTypeController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return VoucherType::latest()->get();
     }
 
     /**
@@ -29,7 +21,14 @@ class VoucherTypeController extends Controller
      */
     public function store(StoreVoucherTypeRequest $request)
     {
-        //
+        //TODO Create and save the Product using validated data
+        $voucherType = VoucherType::create($request->validated());
+
+        //TODO Return a success response with the created Product
+        return response()->json([
+            'message' => 'Voucher Type created successfully!',
+            'data' => $voucherType,
+        ], 201);
     }
 
     /**
@@ -37,15 +36,7 @@ class VoucherTypeController extends Controller
      */
     public function show(VoucherType $voucherType)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(VoucherType $voucherType)
-    {
-        //
+        return response()->json($voucherType);
     }
 
     /**
@@ -53,7 +44,14 @@ class VoucherTypeController extends Controller
      */
     public function update(UpdateVoucherTypeRequest $request, VoucherType $voucherType)
     {
-        //
+        //TODO Update the Product with validated data
+        $voucherType->update($request->validated());
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Voucher Type updated successfully!',
+            'data' => $voucherType,
+        ], 200);
     }
 
     /**
@@ -61,6 +59,13 @@ class VoucherTypeController extends Controller
      */
     public function destroy(VoucherType $voucherType)
     {
-        //
+        //TODO Delete the brand
+        $voucherType->delete();
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Voucher Type deleted successfully!',
+        ], 200);
     }
 }
+
