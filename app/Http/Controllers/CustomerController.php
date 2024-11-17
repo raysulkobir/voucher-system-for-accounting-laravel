@@ -13,15 +13,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Customer::latest()->get();
     }
 
     /**
@@ -29,7 +21,14 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        //TODO Create and save the Product using validated data
+        return $customer = Customer::create($request->validated());
+
+        //TODO Return a success response with the created Product
+        return response()->json([
+            'message' => 'Customer created successfully!',
+            'data' => $customer,
+        ], 201);
     }
 
     /**
@@ -37,15 +36,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Customer $customer)
-    {
-        //
+        return response()->json($customer);
     }
 
     /**
@@ -53,7 +44,14 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        //TODO Update the Product with validated data
+        $customer->update($request->validated());
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Customer updated successfully!',
+            'data' => $customer,
+        ], 200);
     }
 
     /**
@@ -61,6 +59,12 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        //TODO Delete the brand
+        $customer->delete();
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Customer deleted successfully!',
+        ], 200);
     }
 }
