@@ -13,15 +13,7 @@ class AccountsController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Accounts::latest()->get();
     }
 
     /**
@@ -29,7 +21,14 @@ class AccountsController extends Controller
      */
     public function store(StoreAccountsRequest $request)
     {
-        //
+        //TODO Create and save the Product using validated data
+        $accounts = Accounts::create($request->validated());
+
+        //TODO Return a success response with the created Product
+        return response()->json([
+            'message' => 'Accounts Type created successfully!',
+            'data' => $accounts,
+        ], 201);
     }
 
     /**
@@ -37,15 +36,7 @@ class AccountsController extends Controller
      */
     public function show(Accounts $accounts)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Accounts $accounts)
-    {
-        //
+        return response()->json($accounts);
     }
 
     /**
@@ -53,7 +44,14 @@ class AccountsController extends Controller
      */
     public function update(UpdateAccountsRequest $request, Accounts $accounts)
     {
-        //
+        //TODO Update the Product with validated data
+        $accounts->update($request->validated());
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Accounts updated successfully!',
+            'data' => $accounts,
+        ], 200);
     }
 
     /**
@@ -61,6 +59,13 @@ class AccountsController extends Controller
      */
     public function destroy(Accounts $accounts)
     {
-        //
+        //TODO Delete the brand
+        $accounts->delete();
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Accounts deleted successfully!',
+        ], 200);
     }
 }
+

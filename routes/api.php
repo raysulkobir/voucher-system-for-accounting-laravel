@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherTypeController;
 use Illuminate\Http\Request;
@@ -13,5 +14,8 @@ Route::apiResource('product', ProductController::class, [
     'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
 ]);
 Route::apiResource('voucher-type', VoucherTypeController::class, [
+    'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
+]);
+Route::apiResource('account', AccountsController::class, [
     'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
 ]);
