@@ -20,3 +20,6 @@ Route::apiResource('voucher-type', VoucherTypeController::class, [
 Route::apiResource('accounts', AccountsController::class, [
     'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
 ]);
+Route::apiResource('voucher-types', VoucherTypeController::class, [
+    'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
+]);
