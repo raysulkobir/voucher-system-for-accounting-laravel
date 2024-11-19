@@ -22,7 +22,7 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         //TODO Create and save the Product using validated data
-        return $customer = Customer::create($request->validated());
+        $customer = Customer::create($request->validated());
 
         //TODO Return a success response with the created Product
         return response()->json([
