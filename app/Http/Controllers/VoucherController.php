@@ -13,23 +13,20 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(['data' => Voucher::latest()->get()], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
+     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreVoucherRequest $request)
     {
-        //
+        $voucher = Voucher::create($request->validated());
+
+        return response()->json([
+            'message' => 'Voucher created successfully!',
+            'data' => $voucher,
+        ], 201);
     }
 
     /**
@@ -37,15 +34,7 @@ class VoucherController extends Controller
      */
     public function show(Voucher $voucher)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Voucher $voucher)
-    {
-        //
+        return response()->json(['data' => $voucher], 200);
     }
 
     /**
@@ -53,7 +42,12 @@ class VoucherController extends Controller
      */
     public function update(UpdateVoucherRequest $request, Voucher $voucher)
     {
-        //
+        $voucher->update($request->validated());
+
+        return response()->json([
+            'message' => 'Voucher updated successfully!',
+            'data' => $voucher,
+        ], 200);
     }
 
     /**
@@ -61,6 +55,10 @@ class VoucherController extends Controller
      */
     public function destroy(Voucher $voucher)
     {
-        //
+        $voucher->delete();
+
+        return response()->json([
+            'message' => 'Voucher deleted successfully!',
+        ], 200);
     }
 }

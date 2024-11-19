@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\VoucherTypeController;
 use App\Models\Customer;
 
@@ -22,7 +23,7 @@ Route::apiResource('voucher-type', VoucherTypeController::class, [
 Route::apiResource('accounts', AccountsController::class, [
     'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
 ]);
-Route::apiResource('voucher-types', VoucherTypeController::class, [
+Route::apiResource('voucher', VoucherController::class, [
     'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
 ]);
 Route::apiResource('customer', CustomerController::class, [

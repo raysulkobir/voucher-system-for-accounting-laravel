@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateVoucherRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateVoucherRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,19 @@ class UpdateVoucherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'voucher_number' => 'required|string|max:255|unique:vouchers,voucher_number',
+            'account_id'     => 'required|integer', // Ensures account exists
+            'amount'         => 'required|numeric|min:0', // Non-negative decimal
+            'voucher_type'   => 'required|string|max:255', // Adjust based on valid types
+            'voucher_date'   => 'required|date|before_or_equal:today', // Valid date, not future
+            'reference'      => 'nullable|string|max:255',
+            'description'    => 'nullable|string',
+            'created_by'     => 'nullable|integer', // Ensure user exists
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }
