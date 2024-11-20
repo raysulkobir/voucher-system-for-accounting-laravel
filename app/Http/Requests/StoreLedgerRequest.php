@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreLedgerRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreLedgerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,21 @@ class StoreLedgerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "account_id" => "required|integer",
+            "transaction_id" => "nullable|integer",
+            "debit" => "nullable|numeric|min:0",
+            "credit" => "nullable|numeric|min:0",
+            "balance" => "required|numeric",
+            "description" => "nullable|string|max:255",
+            "transaction_date" => "required|date"
         ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }

@@ -11,7 +11,7 @@ class UpdateLedgerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class UpdateLedgerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "account_id" => "required|integer",
+            "transaction_id" => "nullable|integer",
+            "debit" => "nullable|numeric|min:0",
+            "credit" => "nullable|numeric|min:0",
+            "balance" => "required|numeric",
+            "description" => "nullable|string|max:255",
+            "transaction_date" => "required|date"
         ];
     }
 }

@@ -13,15 +13,7 @@ class LedgerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Ledger::latest()->get();
     }
 
     /**
@@ -29,7 +21,14 @@ class LedgerController extends Controller
      */
     public function store(StoreLedgerRequest $request)
     {
-        //
+        //TODO Create and save the Product using validated data
+        return $ledger = Ledger::create($request->validated());
+
+        //TODO Return a success response with the created Product
+        return response()->json([
+            'message' => 'ledger created successfully!',
+            'data' => $ledger,
+        ], 201);
     }
 
     /**
@@ -37,15 +36,7 @@ class LedgerController extends Controller
      */
     public function show(Ledger $ledger)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Ledger $ledger)
-    {
-        //
+        return response()->json($ledger);
     }
 
     /**
@@ -53,7 +44,14 @@ class LedgerController extends Controller
      */
     public function update(UpdateLedgerRequest $request, Ledger $ledger)
     {
-        //
+        //TODO Update the Product with validated data
+        $ledger->update($request->validated());
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Ledger updated successfully!',
+            'data' => $ledger,
+        ], 200);
     }
 
     /**
@@ -61,6 +59,12 @@ class LedgerController extends Controller
      */
     public function destroy(Ledger $ledger)
     {
-        //
+        //TODO Delete the brand
+        $ledger->delete();
+
+        //TODO Return a success response
+        return response()->json([
+            'message' => 'Ledger deleted successfully!',
+        ], 200);
     }
 }
