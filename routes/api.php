@@ -9,7 +9,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\VoucherTypeController;
+use App\Models\Sale;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -31,5 +33,8 @@ Route::apiResource('customer', CustomerController::class, [
     'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
 ]);
 Route::apiResource('ledger', LedgerController::class, [
+    'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
+]);
+Route::apiResource('sales', SaleController::class, [
     'only' => ['index', 'show', 'store', 'create', 'update', 'destroy']
 ]);

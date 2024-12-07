@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->string('voucher_number')->unique();
+            $table->string('voucher_number')->nullable();
             $table->unsignedBigInteger('account_id');
             $table->decimal('amount', 15, 2);
             $table->string('voucher_type'); // e.g., 'payment', 'receipt', 'journal'
@@ -24,8 +24,8 @@ return new class extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
+            // $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            // $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
         });
     }
 
