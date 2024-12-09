@@ -8,6 +8,7 @@ use App\Models\Ledger;
 use App\Models\Voucher;
 use App\Models\SaleProduct;
 use Illuminate\Support\Arr;
+use App\Models\Transactions;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
@@ -49,7 +50,7 @@ class SaleController extends Controller
         //TODO Voucher Entries 
 
         //TODO Sales Voucher
-        Voucher::create([
+        $saleVoucher = Voucher::create([
             'voucher_number' => "VCH-$sale->id",
             'account_id' => 1,
             'reference' => $sale->id,
@@ -60,10 +61,12 @@ class SaleController extends Controller
             'created_by' => 1
         ]);
 
+        $this->transliteratorCreate($saleVoucher, $transaction_type = 'sale');
+
         //TODO Receipt Voucher
         $remainingBalance = $sale->grand_total - $sale->paid_amount;
         if($remainingBalance > 0){
-            Voucher::create([
+            $transactionReceiptVoucher = Voucher::create([
                 'voucher_number' => "VCH-$sale->id",
                 'account_id' => 1,
                 'reference' => $sale->id,
@@ -73,6 +76,7 @@ class SaleController extends Controller
                 'description' => "Cash Received",
                 'created_by' => 1
             ]);
+            $this->transliteratorCreate($transactionReceiptVoucher, $transaction_type = 'payment');
         }
 
         // TODO Ledger Entries
@@ -88,7 +92,6 @@ class SaleController extends Controller
         ]);
 
         //! Cash Ledger Entry
-       
         Ledger::create([
             'account_id' => 1,
             'transaction_id' => 1,
@@ -99,6 +102,7 @@ class SaleController extends Controller
             'description' => 'Cash Received',
         ]);
 
+        //! Cash Lader Receivable 
         $remainingBalance = $sale->grand_total - $sale->paid_amount;
         if($remainingBalance > 0){
             Ledger::create([
@@ -117,6 +121,24 @@ class SaleController extends Controller
             'message' => 'Sale created successfully!',
             'data' => $sale,
         ], 201);
+    }
+
+    public function transliteratorCreate($saleVoucher, $transaction_type){
+        //TODO Fetch the latest transaction to determine the last number
+        $lastTransaction = Transactions::latest('id')->first();
+
+        //TODO Generate the new transaction number
+        $nextNumber = $lastTransaction ? $lastTransaction->id + 1 : 1;
+        $transactionNumber = "Trx-" . $nextNumber;
+
+        Transactions::create([
+            'transaction_number' => $transactionNumber,
+            'voucher_id' => $saleVoucher->id,
+            'total_amount' => $saleVoucher->amount,
+            'transaction_type' => $transaction_type,
+            'transaction_date' => Carbon::now(),
+            'description' => 'description',
+        ]);
     }
 
     /**
